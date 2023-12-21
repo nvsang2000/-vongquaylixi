@@ -123,7 +123,7 @@
     <div class="before" style="z-index: 9999"></div>
     <div class="after"></div>
 </div>
-
+<div class='falling-leaves'></div>
 <body>
     <div class="topheader">
         <img class="responsive" id="myImg" onclick="changeSetting()" style="z-index:99;top:50px;" src="img/hea2.png" />
@@ -154,7 +154,7 @@
     </div>
 
     <img class="responsive2" style="position:fixed;z-index:99;top:0px;right:0px" src="img/hea1.png" />
-    <div style="position:fixed;z-index:99;bottom:-50px;left:0;width:100%;height:500px;background:url(img/bot1.png) repeat-x bottom left;"></div>
+    <div style="position:fixed;z-index:99;bottom:-50px;left:0;background:url(img/bot1.png) repeat-x bottom left;"></div>
     <img class="responsive3" style="position:fixed;z-index:99;bottom:20px;left:20px" src="img/bot2.png" />
     <div class="nutcaidat" style="position:fixed;bottom:0px;left:20px" onClick="mopopup()"></div>
     <input type="range" id="range" style="position:fixed;bottom:2px;right:20px;z-index: 999" onmousemove="laypower()" touchmousemove="laypower()" min="0" step="0.001" max="1" value="0.3">
@@ -499,6 +499,7 @@
         audio.loop = true;
         audio.play();
     })
+    var respon=window.innerWidth>992,numDes=4,numMB=1,leaveDes=8,leaveMob=6,numLeavesWind=respon?leaveDes:leaveMob,windSpeed=respon?numDes:numMB,LeafScene=function(t){this.viewport=t,this.world=document.createElement("div"),this.leaves=[],this.options={numLeaves:numLeavesWind,wind:{magnitude:1.2,maxSpeed:windSpeed,duration:100,start:0,speed:0}},this.width=this.viewport.offsetWidth,this.height=this.viewport.offsetHeight,this.timer=0,this._resetLeaf=function(t){t.x=2*this.width-Math.random()*this.width*1.75,t.y=-10,t.z=200*Math.random(),t.x>this.width&&(t.x=this.width+10,t.y=Math.random()*this.height/2),0==this.timer&&(t.y=Math.random()*this.height),t.rotation.speed=10*Math.random();var e=Math.random();return e>.5?t.rotation.axis="X":e>.25?(t.rotation.axis="Y",t.rotation.x=180*Math.random()+90):(t.rotation.axis="Z",t.rotation.x=360*Math.random()-180,t.rotation.speed=3*Math.random()),t.xSpeedVariation=.8*Math.random()-.4,t.ySpeed=Math.random()+1.5,t},this._updateLeaf=function(t){var e=this.options.wind.speed(this.timer-this.options.wind.start,t.y)+t.xSpeedVariation;t.x-=e,t.y+=t.ySpeed,t.rotation.value+=t.rotation.speed;var i="translateX( "+t.x+"px ) translateY( "+t.y+"px ) translateZ( "+t.z+"px )  rotate"+t.rotation.axis+"( "+t.rotation.value+"deg )";"X"!==t.rotation.axis&&(i+=" rotateX("+t.rotation.x+"deg)"),t.el.style.webkitTransform=i,t.el.style.MozTransform=i,t.el.style.oTransform=i,t.el.style.transform=i,(t.x<-10||t.y>this.height+10)&&this._resetLeaf(t)},this._updateWind=function(){if(0===this.timer||this.timer>this.options.wind.start+this.options.wind.duration){this.options.wind.magnitude=Math.random()*this.options.wind.maxSpeed,this.options.wind.duration=50*this.options.wind.magnitude+(20*Math.random()-10),this.options.wind.start=this.timer;var t=this.height;this.options.wind.speed=function(e,i){var a=this.magnitude/1.5*(t-2*i/3)/t;return a*Math.sin(2*Math.PI/this.duration*e+3*Math.PI/2)+a}}}};LeafScene.prototype.init=function(){for(var t=0;t<this.options.numLeaves;t++){var e={el:document.createElement("div"),x:80,y:80,z:80,rotation:{axis:"X",value:200,speed:100,x:0},xSpeedVariation:0,ySpeed:0,path:{type:1,start:0},image:1};this._resetLeaf(e),this.leaves.push(e),this.world.appendChild(e.el)}this.world.className="leaf-scene",this.viewport.appendChild(this.world),this.world.style.webkitPerspective="1440px",this.world.style.MozPerspective="1440px",this.world.style.oPerspective="1440px",this.world.style.perspective="1440px";var i=this;window.onresize=function(t){i.width=i.viewport.offsetWidth,i.height=i.viewport.offsetHeight}},LeafScene.prototype.render=function(){this._updateWind();for(var t=0;t<this.leaves.length;t++)this._updateLeaf(this.leaves[t]);this.timer++,requestAnimationFrame(this.render.bind(this))};var leafContainer=document.querySelector(".falling-leaves"),leaves=new LeafScene(leafContainer);leaves.init(),leaves.render();
 </script>
 
 </html>
